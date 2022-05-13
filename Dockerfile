@@ -13,8 +13,7 @@ RUN set -eux; \
       ca-certificates \
       coreutils \
       curl \
-      libcap2-bin  \
-      netcat-openbsd ; \
+      libcap2-bin ; \
     apt-get clean ; \
     rm -rf /var/lib/apt/lists/* ; \
     RELEASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${APP_VERSION}/smtprelay-${APP_VERSION}-${TARGETPLATFORM/\//-}.tar.gz" ; \
