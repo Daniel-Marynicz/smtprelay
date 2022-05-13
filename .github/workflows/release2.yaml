@@ -1,0 +1,41 @@
+name: Release Go Binaries 2
+
+on: 
+  release:
+    types: [created]
+
+jobs:
+  releases-matrix:
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux]
+        goarch: [amd64, arm64]
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set APP_VERSION env
+      run: echo APP_VERSION=$(echo ${GITHUB_REF} | rev | cut -d'/' -f 1 | rev ) >> ${GITHUB_ENV}
+    - name: Set BUILD_TIME env
+      run: echo BUILD_TIME=$(date) >> ${GITHUB_ENV}
+      
+    - uses: wangyoucao577/go-release-action@v1.28
+      with:
+        github_token: ${{ secrets.GHCR_IO_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        goversion: 1.18
+        extra_files: LICENSE README.md smtprelay.ini
+        ldflags: -s -w -X "main.appVersion=${{ env.APP_VERSION }}" -X "main.buildTime=${{ env.BUILD_TIME }}"
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+  build-docker-iamges:
+    uses: ${{ github.repository_owner }}/.github/workflows/release-docker-images.yaml@dockerfile
+    needs:
+      - releases-matrix
+    secrets:
+      CI_TOKEN: ${{ secrets.GHCR_IO_TOKEN }}

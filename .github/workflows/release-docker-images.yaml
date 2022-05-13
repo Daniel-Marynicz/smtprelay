@@ -1,12 +1,19 @@
 name: Release Docker Images
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
+  workflow_call:
+    secrets:
+      GHCR_IO_TOKEN:
+        description: "GHCR_IO_TOKEN"
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
       - name: dump release
         run: |
           echo ${{ github.repository }}
@@ -14,7 +21,7 @@ jobs:
           echo ${{ github.ref_name }}
           echo ${{ github.event.release.name }}
           echo ${{ github.event.release.tag_name }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         with:
@@ -44,3 +51,7 @@ jobs:
           build-args: |
             {{ github.repository_owner }}
             
+      - name: Set APP_VERSION env
+        run: echo APP_VERSION=$(echo ${GITHUB_REF} | rev | cut -d'/' -f 1 | rev ) >> ${GITHUB_ENV}
+      - name: Set BUILD_TIME env
+        run: echo BUILD_TIME=$(date) >> ${GITHUB_ENV}
