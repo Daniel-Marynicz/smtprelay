@@ -29,3 +29,27 @@ device which produces mail.
 * Forwards all mail to a smarthost (any SMTP server)
 * Small codebase
 * IPv6 support
+
+### Docker 
+
+You can find docker containers at [https://github.com/decke/smtprelay/pkgs/container/smtprelay](https://github.com/decke/smtprelay/pkgs/container/smtprelay)
+
+Example docker-compose.yaml file:
+
+```yaml
+version: '3.7'
+services:
+    smtprelay:
+        image: ghcr.io/decke/smtprelay:latest
+        healthcheck:
+            test: [ 'CMD-SHELL', 'echo -e "HELO hello\nQUIT" | nc -w 5 localhost 25 || exit 1']
+        command:
+            - -listen
+            - '0.0.0.0:25'
+            - -allowed_nets
+            - '10.0.0.0/8 127.0.0.0/8'
+            - -allowed_sender
+            - 'example@example.com'
+            - '-remotes'
+            - 'starttls://user:pass@example.com:587'
+```

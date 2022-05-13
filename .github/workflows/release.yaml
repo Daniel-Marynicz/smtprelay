@@ -28,3 +28,9 @@ jobs:
         goversion: 1.18
         extra_files: LICENSE README.md smtprelay.ini
         ldflags: -s -w -X "main.appVersion=${{ env.APP_VERSION }}" -X "main.buildTime=${{ env.BUILD_TIME }}"
+  release-docker-iamges:
+    uses: ./.github/workflows/release-docker-images.yaml
+    needs:
+      - releases-matrix
+    secrets:
+      GHCR_IO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
