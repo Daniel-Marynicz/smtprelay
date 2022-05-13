@@ -38,4 +38,4 @@ jobs:
     needs:
       - releases-matrix
     secrets:
-      CI_TOKEN: ${{ secrets.GHCR_IO_TOKEN }}
+      GHCR_IO_TOKEN: ${{ secrets.GHCR_IO_TOKEN }}
