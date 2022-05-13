@@ -29,3 +29,8 @@ device which produces mail.
 * Forwards all mail to a smarthost (any SMTP server)
 * Small codebase
 * IPv6 support
+
+### Docker 
+
+You can find docker containers at [https://github.com/decke/smtprelay/pkgs/container/smtprelay](https://github.com/decke/smtprelay/pkgs/container/smtprelay)
+
