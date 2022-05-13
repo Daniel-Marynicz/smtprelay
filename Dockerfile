@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM debian:bullseye-slim as build
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
-ARG REPOSITORY_OWNER=decke/smtprelay
+ARG GITHUB_REPOSITORY=decke/smtprelay
 ARG APP_VERSION=v1.8.0
 
 SHELL ["/bin/bash", "-c"]
@@ -17,8 +17,8 @@ RUN set -eux; \
       netcat-openbsd ; \
     apt-get clean ; \
     rm -rf /var/lib/apt/lists/* ; \
-    RELEASE_URL="https://github.com/${REPOSITORY_OWNER}/releases/download/${APP_VERSION}/smtprelay-${APP_VERSION}-${TARGETPLATFORM/\//-}.tar.gz" ; \
-    RELEASE_MD5_URL="https://github.com/${REPOSITORY_OWNER}/releases/download/${APP_VERSION}/smtprelay-${APP_VERSION}-${TARGETPLATFORM/\//-}.tar.gz.md5" ; \
+    RELEASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${APP_VERSION}/smtprelay-${APP_VERSION}-${TARGETPLATFORM/\//-}.tar.gz" ; \
+    RELEASE_MD5_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${APP_VERSION}/smtprelay-${APP_VERSION}-${TARGETPLATFORM/\//-}.tar.gz.md5" ; \
     curl  --fail --silent --location --output  /tmp/smtprelay.tar.gz "${RELEASE_URL}" ; \
     curl  --fail  --silent --location --output  /tmp/smtprelay.tar.gz.md5  "${RELEASE_MD5_URL}" ; \
     echo "$(cat /tmp/smtprelay.tar.gz.md5) /tmp/smtprelay.tar.gz" | md5sum -c ; \

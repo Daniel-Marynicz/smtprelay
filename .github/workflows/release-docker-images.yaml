@@ -49,11 +49,5 @@ jobs:
           push: true
           platforms: ${{ steps.buildx.outputs.platforms }}
           build-args: |
-            REPOSITORY_OWNER=${{ github.repository_owner }}
+            GITHUB_REPOSITORY=${{ github.repository }}
             APP_VERSION=${{ github.ref_name }}
-            
-            
-      - name: Set APP_VERSION env
-        run: echo APP_VERSION=$(echo ${GITHUB_REF} | rev | cut -d'/' -f 1 | rev ) >> ${GITHUB_ENV}
-      - name: Set BUILD_TIME env
-        run: echo BUILD_TIME=$(date) >> ${GITHUB_ENV}
