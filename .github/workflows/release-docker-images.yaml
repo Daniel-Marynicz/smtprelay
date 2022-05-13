@@ -6,10 +6,6 @@ on:
         description: "GHCR_IO_TOKEN"
         required: true
   workflow_dispatch:
-    app_version:
-      description: 'Build with app version'
-      type: string
-      required: false
 
 jobs:
   build:
@@ -46,6 +42,8 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
+      - name: set APP_VERSION
+        if:  ${{ github.event.inputs.app_version ||  }}
       - name: Build  and push
         uses: docker/build-push-action@v2
         with:
