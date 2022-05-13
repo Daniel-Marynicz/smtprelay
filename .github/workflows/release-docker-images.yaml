@@ -6,6 +6,11 @@ on:
         description: "GHCR_IO_TOKEN"
         required: true
   workflow_dispatch:
+    app_version:
+      description: 'Build with app version'
+      type: string
+      required: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
