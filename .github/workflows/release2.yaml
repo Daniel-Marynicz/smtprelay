@@ -34,7 +34,7 @@ jobs:
       run: |
         echo "$GITHUB_CONTEXT"
   build-docker-iamges:
-    uses: ./.github/workflows/release-docker-images.yaml@dockerfile
+    uses: ./.github/workflows/release-docker-images.yaml@master
     needs:
       - releases-matrix
     secrets:
